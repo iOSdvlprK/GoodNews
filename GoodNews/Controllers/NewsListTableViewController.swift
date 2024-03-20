@@ -16,10 +16,16 @@ class NewsListTableViewController: UITableViewController {
     private func setup() {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
-        let url = URL(string: "https://newsapi.org/v2/top-headlines?country=us&apiKey=59bd1f3a229349a89c524bb078ce24e5")!
+        guard let url = URL(string: "https://newsapi.org/v2/top-headlines?country=us&apiKey=\(apiKey)") else {
+            print("Invalid URL")
+            return
+        }
         
-        Webservice().getArticles(url: url) { _ in
-            
+        Webservice().getArticles(url: url) { articles in
+            for article in articles {
+                print("Title: \(article.title)")
+                print("Description: \(article.description ?? "")\n")
+            }
         }
     }
 }
